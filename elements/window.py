@@ -1,4 +1,6 @@
 import pygame, sys
+from grid import Grid
+
 
 #window and background
 size = width, height = 600, 400
@@ -6,23 +8,16 @@ black = 0, 0, 0
 white = 255, 255, 255
 screen = pygame.display.set_mode(size)
 r = 10;
-
-class Cell:
-    def __init__(self, x, y, r):
-        self.x = x
-        self.y = y
-        self.r = r
+grid_array = []
 
 
-    def draw(self):
-        top = pygame.draw.line(screen, white, (self.x, self.y), (self.x + self.r, self.y))
-        right = pygame.draw.line(screen, white, (self.x + self.r, self.y), (self.x + self.r, self.y + self.r))
-        bottom = pygame.draw.line(screen, white, (self.x + self.r, self.y + self.r), (self.x, self.y + self.r))
-        left = pygame.draw.line(screen, white, (self.x, self.y + self.r), (self.x, self.y))
+#setup:
 
+for x in range(0, width, r):
+    for y in range(0, height, r):
+        grid_array.append(Grid(x, y, r))
 
-cell = Cell(0, 0, r)
-
+#main loop
 while True:
     #exit loop
     for event in pygame.event.get():
@@ -31,6 +26,8 @@ while True:
     #fill screen
     screen.fill(black)
     #draw
-    cell.draw()
+
+    for grid in grid_array:
+        grid.draw(screen, white)
     #update
     pygame.display.flip()
