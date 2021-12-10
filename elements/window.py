@@ -15,7 +15,7 @@ grid_array = []
 
 for x in range(0, width, r):
     for y in range(0, height, r):
-        grid_array.append(Grid(x, y, r))
+        grid_array.append(Grid(x, y, r, screen, white))
 
 #main loop
 while True:
@@ -25,9 +25,11 @@ while True:
 
     #fill screen
     screen.fill(black)
-    #draw
 
+    #draw
     for grid in grid_array:
-        grid.draw(screen, white)
+        #grid.draw()
+        grid.update()
+
     #update
     pygame.display.flip()
