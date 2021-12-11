@@ -7,22 +7,21 @@ size = width, height = 500, 500
 black = 0, 0, 0
 white = 255, 255, 255
 screen = pygame.display.set_mode(size)
-r = 10
+r = 25
 grid = []
 # frames per second setting
-FPS = 60
+FPS = 10
 fpsClock = pygame.time.Clock()
 
 cols = math.floor(width/r)
 rows = math.floor(height/r)
 
-for x in range(rows):
-    for y in range(cols):
-        cell = Grid(x, y, screen)
-        grid.append(cell)
+for j in range(rows):
+    for i in range(cols):
+        grid.append(Grid(i, j, screen))
 
 #setup:
-
+grid[0].type = True
 #events
 
 
@@ -43,7 +42,7 @@ while True:
     #draw
     for cell in grid:
         cell.draw()
-        cell.check_neighbors(grid)
+        cell.update(grid)
 
     #update
 
