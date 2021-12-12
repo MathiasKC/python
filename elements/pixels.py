@@ -1,25 +1,26 @@
 import pygame, sys
 import math
 import random
-size = width, height = 150, 150
-cols = height
-rows = width
+size = width, height = 500, 500
+r = 10
+cols = int(height/r)
+rows = int(width/r)
 
 black = 0, 0, 0
 white = 255, 255, 255
 screen = pygame.display.set_mode(size)
-FPS = 60
+FPS = 40
 fpsClock = pygame.time.Clock()
 
 
 class Pixel:
     def __init__(self, i, j):
-        self.i = i
-        self.j = j
+        self.i = i * r
+        self.j = j * r
         self.color = white
 
     def draw(self):
-        pygame.draw.rect(screen, self.color, pygame.Rect(self.i, self.j, 1, 1))
+        pygame.draw.rect(screen, self.color, [self.i, self.j, r, r])
 
 
 pixel_array = []
