@@ -1,14 +1,14 @@
 import pygame, sys
 import math
 import random
-size = width, height = 500, 500
+size = width, height = 150, 150
 cols = height
 rows = width
 
 black = 0, 0, 0
 white = 255, 255, 255
 screen = pygame.display.set_mode(size)
-FPS = 30
+FPS = 60
 fpsClock = pygame.time.Clock()
 
 
@@ -32,8 +32,8 @@ for i in range(cols):
     pixel_array.append(pixel_rows)
 
 
-
 while True:
+    pixel_array[int(cols/2)][0].color = black
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
@@ -41,8 +41,22 @@ while True:
             #mouse click
 
     screen.fill(black)
-    for i in range(cols):
-        for j in range(rows):
-            pixel_array[i][j].draw()
+    for x in range(cols):
+        for y in range(rows):
+            pixel_array[x][y].draw()
+    for x in range(cols):
+        for y in range(rows):
+            if y < cols - 1:
+                if pixel_array[x][y].color == black and pixel_array[x][y + 1].color == white:
+                    pixel_array[x][y + 1].color = black
+                    pixel_array[x][y].color = white
+
+                if x < rows - 1:
+                    if pixel_array[x][y].color == black and pixel_array[x][y + 1].color == black and pixel_array[x - 1][y + 1].color == white:
+                        pixel_array[x - 1][y + 1].color = black
+                        pixel_array[x][y].color = white
+                    if pixel_array[x][y].color == black and pixel_array[x][y + 1].color == black and pixel_array[x - 1][y + 1].color == black and pixel_array[x + 1][y + 1].color == white:
+                        pixel_array[x + 1][y + 1].color = black
+                        pixel_array[x][y].color = white
     pygame.display.flip()
     fpsClock.tick(FPS)

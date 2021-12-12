@@ -1,28 +1,54 @@
 import pygame, sys
-from grid import Grid
 import math
 
+import random
 #window and background
-size = width, height = 500, 500
+size = width, height = 100, 100
 black = 0, 0, 0
 white = 255, 255, 255
 screen = pygame.display.set_mode(size)
-r = 25
-grid = []
-# frames per second setting
-FPS = 10
-fpsClock = pygame.time.Clock()
 
+# frames per second setting
+FPS = 30
+fpsClock = pygame.time.Clock()
+r = 10
 cols = math.floor(width/r)
 rows = math.floor(height/r)
+grid_array = []
 
-for j in range(rows):
-    for i in range(cols):
-        grid.append(Grid(i, j, screen))
+class Grid:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
+    def draw(self):
+        pygame.draw.rect(screen, white, pygame.Rect(self.x, self.y, r, r))
+print(cols, rows)
+for x in range(cols):
+    col = []
+    for y in range(rows):
+        col.append(Grid(y, x))
+    grid_array.append(col)
+
+
+
+class Grid:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.color = white
+
+    def draw(self):
+        x = self.x * r
+        y = self.y * r
+        pygame.draw.rect(self.screen, self.color, pygame.Rect(x, y, r, r))
 #setup:
-grid[0].type = True
+
+
+
+
 #events
+
 
 
 #main loop
@@ -30,19 +56,17 @@ while True:
     #exit loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
-
         #if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             #mouse click
-
 
 
     #fill screen
     screen.fill(black)
 
     #draw
-    for cell in grid:
-        cell.draw()
-        cell.update(grid)
+
+    grid_array[1][5].draw()
+
 
     #update
 
