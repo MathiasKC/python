@@ -11,7 +11,7 @@ white = 255, 255, 255
 screen = pygame.display.set_mode(size)
 FPS = 40
 fpsClock = pygame.time.Clock()
-
+pressed = False
 
 class Pixel:
     def __init__(self, i, j):
@@ -34,12 +34,18 @@ for i in range(cols):
 
 
 while True:
-    pixel_array[int(cols/2)][0].color = black
+    if pressed:
+        x, y = pygame.mouse.get_pos()
+        print(x / r, y / r)
+        pixel_array[int(x / r)][int(y/r)].color = black
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
-        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            #mouse click
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            pressed = True
+        if event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                pressed = False
 
     screen.fill(black)
     for x in range(cols):
