@@ -87,11 +87,17 @@ while True:
                     pixel_array[x][y + 1].color = water
                     pixel_array[x][y].color = white
                 if x < rows - 1:
-                    #check left down
+
+                    #check left down - sand
                     if pixel_array[x][y].color == water and pixel_array[x][y + 1].color == sand and pixel_array[x - 1][y + 1].color == white:
                         pixel_array[x - 1][y + 1].color = water
                         pixel_array[x][y].color = white
 
+                    #check for white block on the left
+                    if pixel_array[x][y].color == water and pixel_array[x - 1][y].color == white:
+                        pixel_array[x - 1][y].color = water
+                        pixel_array[x][y].color = white
+                    
 
             #water lighter than sand
             if pixel_array[x][y].color == water and pixel_array[x][y - 1].color == sand:
