@@ -7,7 +7,7 @@ cols = int(height/r)
 rows = int(width/r)
 #colors, elements
 sand = 255, 255, 0
-white = 255, 255, 255
+white = 50, 50, 50
 water = 0, 0, 255
 screen = pygame.display.set_mode(size)
 FPS = 40
@@ -103,6 +103,8 @@ while True:
                     if pixel_array[x][y].color == water and pixel_array[x - 1][y].color == white:
                         pixel_array[x - 1][y].color = water
                         pixel_array[x][y].color = white
+
+
 
 
 
