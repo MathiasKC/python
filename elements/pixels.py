@@ -73,11 +73,11 @@ while True:
                     pixel_array[x][y].color = white
 
                 if x < rows - 1:
-                    if pixel_array[x][y].color == sand and pixel_array[x][y + 1].color == sand and pixel_array[x - 1][y + 1].color == white:
+                    if pixel_array[x][y].color == sand and pixel_array[x][y + 1].color == sand and pixel_array[x - 1][y + 1].color != sand:
                         pixel_array[x - 1][y + 1].color = sand
                         pixel_array[x][y].color = white
 
-                    if pixel_array[x][y].color == sand and pixel_array[x][y + 1].color == sand and pixel_array[x - 1][y + 1].color == sand and pixel_array[x + 1][y + 1].color == white:
+                    if pixel_array[x][y].color == sand and pixel_array[x][y + 1].color == sand and pixel_array[x - 1][y + 1].color == sand and pixel_array[x + 1][y + 1].color != sand:
                         pixel_array[x + 1][y + 1].color = sand
                         pixel_array[x][y].color = white
 
