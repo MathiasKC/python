@@ -20,6 +20,8 @@ class Pixel:
         self.i = i * r
         self.j = j * r
         self.color = white
+        self.moving = False
+
 
     def draw(self):
         pygame.draw.rect(screen, self.color, [self.i, self.j, r, r])
@@ -71,44 +73,38 @@ while True:
                 if pixel_array[x][y].color == sand and pixel_array[x][y + 1].color == white:
                     pixel_array[x][y + 1].color = sand
                     pixel_array[x][y].color = white
-
+                #check down left
                 if x < rows - 1:
                     if pixel_array[x][y].color == sand and pixel_array[x][y + 1].color == sand and pixel_array[x - 1][y + 1].color != sand:
                         pixel_array[x - 1][y + 1].color = sand
                         pixel_array[x][y].color = white
-
+                    #check down right
                     if pixel_array[x][y].color == sand and pixel_array[x][y + 1].color == sand and pixel_array[x - 1][y + 1].color == sand and pixel_array[x + 1][y + 1].color != sand:
                         pixel_array[x + 1][y + 1].color = sand
                         pixel_array[x][y].color = white
 
-                #WATER PHISICS
-                #falling
+                #WATER PHYSICS
+                #falling...
                 if pixel_array[x][y].color == water and pixel_array[x][y + 1].color == white:
                     pixel_array[x][y + 1].color = water
                     pixel_array[x][y].color = white
+
+
                 if x < rows - 1:
-
-
-                    #check left down - sand
-                    if pixel_array[x][y].color == water and pixel_array[x][y + 1].color == sand and pixel_array[x - 1][y + 1].color == white:
-                        pixel_array[x - 1][y + 1].color = water
-                        pixel_array[x][y].color = white
-
-                    #check right down
-                    if pixel_array[x][y].color == water and pixel_array[x + 1][y + 1].color == white and pixel_array[x][y + 1].color == sand:
-                        pixel_array[x + 1][y + 1].color = water
-                        pixel_array[x][y].color = white
-
-
-                    #check for white block on the left
-                    if pixel_array[x][y].color == water and pixel_array[x - 1][y].color == white:
+                    #check left block
+                    if pixel_array[x][y].color == water and pixel_array[x - 1][y].color == water:
+                        pixel_array[x][y].moving = True
+                    if pixel_array[x][y].color == water and pixel_array[x - 1][y].color == white and pixel_array[x][y].moving == False:
                         pixel_array[x - 1][y].color = water
                         pixel_array[x][y].color = white
 
-            #water lighter than sand
-            if pixel_array[x][y].color == water and pixel_array[x][y - 1].color == sand:
-                pixel_array[x][y - 1].color = water
-                pixel_array[x][y].color = sand
+
+                    #check right block
+                    if pixel_array[x][y].color == water and pixel_array[x + 1][y].color == white and pixel_array[x][y].moving:
+                        pixel_array[x + 1][y].color = water
+                        pixel_array[x][y].color = white
+
+
 
 
 
