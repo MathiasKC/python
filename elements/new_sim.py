@@ -38,11 +38,15 @@ class Pixel:
     def __init__(self):
         self.x = random.randrange(width)
         self.y = random.randrange(height)
+        self.homeX = random.randrange(width)
+        self.homeY = random.randrange(width)
         self.color = white
         self.distance = None
         self.xx, self.yy = None, None
         self.reach = 300
         self.type = None
+        self.center_d = None
+        self.filled = False
 
 
     def draw(self):
@@ -63,7 +67,8 @@ class Pixel:
                 closest_item = array[element]
 
         if closest_item != None:
-            self.xx, self.yy = closest_item.x, closest_item.y
+            #get center of item
+            self.xx, self.yy = closest_item.x + array[element].r / 2, closest_item.y + array[element].r / 2
 
     #random movement - to improve
     def wander(self):
@@ -81,22 +86,32 @@ class Pixel:
 
     def update(self):
         if self.distance < self.reach:
-            if self.xx != None and self.yy != None:
+
+            if self.xx != None and self.yy != None and self.filled == False:
                 self.move_to(self.xx, self.yy)
+
+            if self.x == self.xx and self.y == self.yy:
+                self.filled = True
+
+            if self.filled:
+                self.move_to(self.homeX, self.homeY)
+                if self.x == self.homeX and self.y == self.homeY:
+                    self.filled = False
+
         else:
             self.wander()
 
 
     def move_to(self, x, y):
-        if x > self.x:
-            self.x += 1
-        if x < self.x:
-            self.x -= 1
+            if x > self.x:
+                self.x += 1
+            if x < self.x:
+                self.x -= 1
 
-        if y > self.y:
-            self.y += 1
-        if y < self.y:
-            self.y -= 1
+            if y > self.y:
+                self.y += 1
+            if y < self.y:
+                self.y -= 1
 
 
 
@@ -111,7 +126,7 @@ for i in range(resources_number):
 
 
 
-fill_array(2, pixel_array)
+fill_array(10, pixel_array)
 
 
 while True:
