@@ -40,6 +40,7 @@ class Pixel:
         self.y = random.randrange(height)
         self.homeX = random.randrange(width)
         self.homeY = random.randrange(width)
+        self.homeInventory = 0
         self.color = white
         self.distance = None
         self.xx, self.yy = None, None
@@ -84,6 +85,10 @@ class Pixel:
             self.y -= 1
 
 
+    def get_home(self):
+        if self.homeInventory > 5:
+            pygame.draw.rect(screen, red, [self.homeX, self.homeY, 10, 10])
+
     def update(self):
         if self.distance < self.reach:
 
@@ -96,7 +101,10 @@ class Pixel:
             if self.filled:
                 self.move_to(self.homeX, self.homeY)
                 if self.x == self.homeX and self.y == self.homeY:
+                    self.homeInventory += 1
+                    print(self.homeInventory)
                     self.filled = False
+
 
         else:
             self.wander()
@@ -137,6 +145,7 @@ while True:
         resource_array[i].draw()
     for i in range(len(pixel_array)):
         pixel_array[i].draw()
+        pixel_array[i].get_home()
         pixel_array[i].look_for(resource_array)
         pixel_array[i].update()
     pygame.display.flip()
