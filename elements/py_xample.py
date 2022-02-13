@@ -8,6 +8,18 @@ FPS = 40
 fpsClock = pygame.time.Clock()
 
 
+
+class Pixel:
+    def __init__(self):
+        self.x = width / 2
+        self.y = 0
+        self.isFalling = None
+        self.type = 'sand'
+
+    def behavior(self):
+        if self.type == 'sand':
+            self.y += 1
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()

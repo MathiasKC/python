@@ -73,23 +73,37 @@ class Pixel:
 
     #random movement - to improve
     def wander(self):
-        rand = random.randint(1, 100)
-        if rand < 50:
-            self.x += 1
-        elif rand > 50:
-            self.x -= 1
-        rand = random.randint(1, 100)
-        if rand < 50:
-            self.y += 1
-        elif rand > 50:
-            self.y -= 1
+            rand = random.randint(1, 1000)
+            if rand < 100:
+                self.x += 5
+            if rand > 900:
+                self.x -= 5
+            rand = random.randint(1, 1000)
+            if rand < 100:
+                self.y += 5
+            if rand > 900:
+                self.y -= 5
 
 
     def get_home(self):
         if self.homeInventory > 5:
             pygame.draw.rect(screen, red, [self.homeX, self.homeY, 10, 10])
 
+
+
+
     def update(self):
+        #----boudaries----
+        if self.x >= width:
+            self.x = 0
+        elif self.x <= 0:
+            self.x = width
+        if self.y >= height:
+            self.y = 0
+        elif self.y <= 0:
+            self.y = height
+        #------------------
+        #---move towards objective and fill home_inventory---------
         if self.distance < self.reach:
 
             if self.xx != None and self.yy != None and self.filled == False:
@@ -104,7 +118,7 @@ class Pixel:
                     self.homeInventory += 1
                     print(self.homeInventory)
                     self.filled = False
-
+            #-------------------------------------------------------
 
         else:
             self.wander()
