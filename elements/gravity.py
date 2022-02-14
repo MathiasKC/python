@@ -2,7 +2,7 @@ import pygame, sys
 import math
 import random
 pygame.init()
-size = width, height = 800, 800
+size = width, height = 600, 600
 r = 5
 cols = int(height/r)
 rows = int(width/r)
@@ -11,7 +11,7 @@ blue = 0, 0, 255
 yellow = 255, 255, 0
 pressed = False
 screen = pygame.display.set_mode(size)
-FPS = 60
+FPS = 120
 fpsClock = pygame.time.Clock()
 pixel_array = []
 
@@ -33,16 +33,21 @@ class Pixel:
         self.fallingSpeed = 1
         self.updated = False
         self.updateCount = 0
+        self.state = 'stationary'
         #neighbors--
         self.top = None
         self.right = None
+        self.bottomRight = None
         self.bottom = None
         self.left = None
+        self.bottomLeft = None
+
 
     def refreshState(self):
         #for updating the state of element
         if self.updated == True and self.updateCount > 0:
             self.updated = False
+            self.updateCount = 0
 
 
     def setMaterial(self):
@@ -54,6 +59,12 @@ class Pixel:
 
         if self.type == 'water':
             self.color = blue
+
+    def getState(self):
+        if self.state == 'stationary':
+            return False
+        elif self.state == 'moving':
+            return True
 
     def update(self):
         if self.type != 'air':
@@ -71,14 +82,10 @@ class Pixel:
 
             #-- sand physics --
             if self.bottom != None and self.type == 'sand' and self.bottom.type == 'air':
-                # print(int(self.x / r),int((self.y / r) + 1))
-                # print("check")
-                # if self.bottom != None and self.bottom.type == 'air':
                 self.bottom.type = 'sand'
                 self.bottom.updated = True
                 self.bottom.updateCount += 1
                 self.type = 'air'
-
 
     #For debugging
     def getIndex(self):
@@ -107,6 +114,7 @@ class Pixel:
         if self.x == width - r:
             self.right = None
 
+
     def draw(self):
         pygame.draw.rect(screen, self.color, [self.x, self.y, r, r])
 
@@ -118,6 +126,7 @@ for i in range(cols):
 
 
 while True:
+    #mouse click changes air to selected material
     if pressed:
         x, y = pygame.mouse.get_pos()
         pixel_array[int(x / r)][int(y/r)].type = 'sand'
