@@ -1,8 +1,9 @@
 import pygame, sys
 import math
 import random
-size = width, height = 500, 500
-r = 10
+pygame.init()
+size = width, height = 800, 800
+r = 5
 cols = int(height/r)
 rows = int(width/r)
 grey = 55, 55, 55
@@ -12,10 +13,17 @@ pressed = False
 screen = pygame.display.set_mode(size)
 FPS = 60
 fpsClock = pygame.time.Clock()
-
 pixel_array = []
 
+
+def Render_Text(what, color, where):
+    font = pygame.font.Font('freesansbold.ttf', 32)
+    text = font.render(what, 1, pygame.Color(color))
+    screen.blit(text, where)
+
+
 class Pixel:
+
     def __init__(self, x, y, array):
         self.x = x
         self.y = y
@@ -30,8 +38,6 @@ class Pixel:
         self.right = None
         self.bottom = None
         self.left = None
-
-
 
     def refreshState(self):
         #for updating the state of element
@@ -50,12 +56,13 @@ class Pixel:
             self.color = blue
 
     def update(self):
-        self.setMaterial()
-        self.getNeighbors()
-        self.applyForce()
-        self.setMaterial()
-        self.refreshState()
-        self.draw()
+        if self.type != 'air':
+            self.setMaterial()
+            self.getNeighbors()
+            self.applyForce()
+            self.setMaterial()
+            self.refreshState()
+            self.draw()
 
 
     def applyForce(self):
@@ -72,8 +79,6 @@ class Pixel:
                 self.bottom.updateCount += 1
                 self.type = 'air'
 
-                print("done")
-
 
     #For debugging
     def getIndex(self):
@@ -83,8 +88,7 @@ class Pixel:
                     print("Exists")
                     print("self :",x, y)
 
-
-
+    #getting neighbors if exists and storing them in self
     def getNeighbors(self):
         if self.y > 0:
             self.top = self.array[int(self.x / r)][int((self.y - 1) / r)]
@@ -103,11 +107,6 @@ class Pixel:
         if self.x == width - r:
             self.right = None
 
-
-
-
-
-
     def draw(self):
         pygame.draw.rect(screen, self.color, [self.x, self.y, r, r])
 
@@ -121,7 +120,6 @@ for i in range(cols):
 while True:
     if pressed:
         x, y = pygame.mouse.get_pos()
-        print(x / r, y / r)
         pixel_array[int(x / r)][int(y/r)].type = 'sand'
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
@@ -135,4 +133,5 @@ while True:
         for y in range(rows):
             pixel_array[x][y].update()
     fpsClock.tick(FPS)
+    Render_Text(str(int(fpsClock.get_fps())), (255,0,0), (0,0))
     pygame.display.flip()
