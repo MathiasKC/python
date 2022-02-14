@@ -8,8 +8,9 @@ rows = int(width/r)
 grey = 55, 55, 55
 blue = 0, 0, 255
 yellow = 255, 255, 0
+pressed = False
 screen = pygame.display.set_mode(size)
-FPS = 30
+FPS = 60
 fpsClock = pygame.time.Clock()
 
 pixel_array = []
@@ -32,9 +33,12 @@ class Pixel:
 
 
 
-    def refreshMaterial(self):
+    def refreshState(self):
+        #for updating the state of element
         if self.updated == True and self.updateCount > 0:
             self.updated = False
+
+
     def setMaterial(self):
         if self.type == 'sand':
             self.color = yellow
@@ -49,7 +53,8 @@ class Pixel:
         self.setMaterial()
         self.getNeighbors()
         self.applyForce()
-        self.refreshMaterial()
+        self.setMaterial()
+        self.refreshState()
         self.draw()
 
 
@@ -70,7 +75,7 @@ class Pixel:
                 print("done")
 
 
-
+    #For debugging
     def getIndex(self):
         for x in range(cols):
             for y in range(rows):
@@ -81,7 +86,6 @@ class Pixel:
 
 
     def getNeighbors(self):
-        print("x:",self.x, "y:",self.y)
         if self.y > 0:
             self.top = self.array[int(self.x / r)][int((self.y - 1) / r)]
         if self.y == 0:
@@ -113,11 +117,19 @@ for i in range(cols):
         pixel_rows.append(Pixel(i*r, j*r, pixel_array))
     pixel_array.append(pixel_rows)
 
-pixel_array[20][0].type = 'sand'
+
 while True:
-    pixel_array[20][0].type = 'sand'
+    if pressed:
+        x, y = pygame.mouse.get_pos()
+        print(x / r, y / r)
+        pixel_array[int(x / r)][int(y/r)].type = 'sand'
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
+    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        pressed = True
+    if event.type == pygame.MOUSEBUTTONUP:
+        if event.button == 1:
+            pressed = False
     screen.fill(grey)
     for x in range(cols):
         for y in range(rows):
